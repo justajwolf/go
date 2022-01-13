@@ -49,6 +49,8 @@ hosting a dir(/home/www) and listening port(9999) ...
 
 ### How to install it.
 
+> Notes: we assume that the current user is `root`. if not, so you need to consider whether to use the prefix, `sudo`.
+
 ```bash
 # clone repo to local.
 $ git clone git@github.com:justajwolf/go.git

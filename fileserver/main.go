@@ -86,17 +86,29 @@ WantedBy=multi-user.target
 	// 立即运行fileserver
 	cmd := exec.Command("systemctl", "start", daemonfile)
 	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	cmd.Run()
+	if !cmd.ProcessState.Success() {
+		return
+	}
 
 	// 设置开机启动
 	cmd = exec.Command("systemctl", "enable", daemonfile)
 	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	cmd.Run()
+	if !cmd.ProcessState.Success() {
+		return
+	}
 
 	// 查看status
 	cmd = exec.Command("systemctl", "status", daemonfile)
 	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	cmd.Run()
+	if !cmd.ProcessState.Success() {
+		return
+	}
 
 	fmt.Println("start fileserver daemon success.")
 }
@@ -105,12 +117,20 @@ func stop() {
 	// 禁止开机启动
 	cmd := exec.Command("systemctl", "disable", daemonfile)
 	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	cmd.Run()
+	if !cmd.ProcessState.Success() {
+		return
+	}
 
 	// 停止运行
 	cmd = exec.Command("systemctl", "stop", daemonfile)
 	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
 	cmd.Run()
+	if !cmd.ProcessState.Success() {
+		return
+	}
 
 	fmt.Println("stop fileserver daemon success.")
 }
