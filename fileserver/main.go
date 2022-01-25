@@ -6,18 +6,20 @@ import (
 	"fmt"
 	"io"
 	"log"
+	"net"
+	"net/http"
 	"os"
 	"os/exec"
+	"strings"
 	"text/template"
-
-	"github.com/gin-gonic/gin"
+	"time"
 )
 
 const daemonfile = "fileserver.service"
 const daemondirpath = "/usr/lib/systemd/system/" + daemonfile
 
 var (
-	port = flag.String("p", "1090", "listen to port.")
+	port = flag.String("p", "1070", "listen to port.")
 	mode = flag.String("m", "release", "debug is a dev mode.")
 	dir  = flag.String("d", "./", "files dir.")
 	cmd  = flag.String("c", "", "set start, to exec fileserver in a daemon. set stop, to quit the daemon. the default is start a normal process.")
@@ -31,11 +33,39 @@ func main() {
 	case "stop":
 		stop()
 	default:
-		gin.SetMode(*mode)
-		router := gin.Default()
-		router.Static("/", *dir)
+		// // 1. use gin framework
+		// gin.SetMode(*mode)
+		// router := gin.Default()
+		// router.Static("/", *dir)
+		// fmt.Printf("hosting a dir(%s) and listening port(%s) ...\n", *dir, *port)
+		// router.Run("0.0.0.0:" + *port)
+
+		// 2. use native net/http
+		http.HandleFunc("/", func(rw http.ResponseWriter, r *http.Request) {
+			start := time.Now()
+			http.FileServer(http.Dir(*dir)).ServeHTTP(rw, r)
+			end := time.Now()
+
+			path := r.URL.Path
+			if r.URL.RawQuery != "" {
+				path = path + "?" + r.URL.RawQuery
+			}
+			ip, _, err := net.SplitHostPort(strings.TrimSpace(r.RemoteAddr))
+			if err != nil {
+				ip = ""
+			}
+			fmt.Fprintf(
+				os.Stdout,
+				"[http] %v | %13v | %10s | %-4s %#v\n",
+				end.Format("2006/01/02 15:04:05"),
+				end.Sub(start),
+				net.ParseIP(ip),
+				r.Method,
+				path,
+			)
+		})
 		fmt.Printf("hosting a dir(%s) and listening port(%s) ...\n", *dir, *port)
-		router.Run("0.0.0.0:" + *port)
+		http.ListenAndServe(":"+*port, nil)
 	}
 }
 
