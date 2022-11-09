@@ -1,16 +1,16 @@
-# go
+# Golang
 
-updating some pkg or tool about go.
+This is a golang repo, [justajwolf/go](https://github.com/justajwolf/go), is updating some pkgs or tools.
 
-## Tools
+## Tools Manifest
 
-updating...
+- `fileserver` : an files hosted server and a cli tool. in detail, see [(^\_^)](https://github.com/justajwolf/go/tree/main/fileserver).
 
-- `fileserver` : an files hosted server and a cli tool. in detail, see [(^_^)](./fileserver/README.md).
+`updating...`
 
-## Pkgs
+## Packages Manifest
 
-updating...
+`updating...`
 
 ## License
 
