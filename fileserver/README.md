@@ -1,10 +1,12 @@
 # fileserver
 
-This is a simple static files hosted service. 
+This is a simple static files hosted service.
 
 when you want to deploy a file Hosted service, it is easy and the best way for you.
 
-## Build 
+see [justajwolf/go/fileserver](https://github.com/justajwolf/go/tree/main/fileserver).
+
+## Build
 
 ```bash
 # build current dir to make the cli file named fileserver.
@@ -25,13 +27,16 @@ Usage of fileserver:
 
 ## Usage
 
-### There are some notices.
-  
+The following demo is executed in `ubuntu`.
+
+### Announcements
+
 If `"-c"` is not set flag, or value is not `"start"` or `"stop"`. it will setup a server only in current process that is not a daemon service.
 
 Besides, `"-m"` is `release` by default. if u want to show log, only set the flag value to `debug`.
 
 You can try it like:
+
 ```bash
 # start a simple server in current process. when you exit the shell, this server will quit.
 $ fileserver
@@ -45,9 +50,8 @@ hosting a dir(./) and listening port(9999) ...
 fileserver -p 9999 -d /home/www
 hosting a dir(/home/www) and listening port(9999) ...
 ```
-  
 
-### How to install it.
+### Steps
 
 > Notes: we assume that the current user is `root`. if not, so you need to consider whether to use the prefix, `sudo`.
 
